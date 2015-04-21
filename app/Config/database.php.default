@@ -71,10 +71,10 @@ class DATABASE_CONFIG {
 	public $default = array(
 		'datasource' => 'Database/Mysql',
 		'persistent' => false,
-		'host' => 'localhost',
-		'login' => 'user',
-		'password' => 'password',
-		'database' => 'database_name',
+		'host' => 'host',
+		'login' => 'root',
+		'password' => 'admin123',
+		'database' => 'training_cake',
 		'prefix' => '',
 		//'encoding' => 'utf8',
 	);
