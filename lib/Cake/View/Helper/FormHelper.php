@@ -376,6 +376,7 @@ class FormHelper extends AppHelper {
 			'encoding' => strtolower(Configure::read('App.encoding')),
 			'inputDefaults' => array()
 		);
+                
 		$this->inputDefaults($options['inputDefaults']);
 		unset($options['inputDefaults']);
 

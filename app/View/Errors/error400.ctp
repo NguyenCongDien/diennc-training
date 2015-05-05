@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -16,7 +17,7 @@
 ?>
 <h2><?php echo $message; ?></h2>
 <p class="error">
-	<strong><?php echo __d('cake', 'Error'); ?>: </strong>
+    <strong><?php echo __d('cake', 'Error'); ?>: </strong>
 	<?php printf(
 		__d('cake', 'The requested address %s was not found on this server.'),
 		"<strong>'{$url}'</strong>"
