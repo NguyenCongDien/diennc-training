@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
 -- Table structure for table `category_wallet`
 --
 
-CREATE TABLE IF NOT EXISTS `category_wallet` (
+CREATE TABLE IF NOT EXISTS `categories_wallets` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `wallet_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
