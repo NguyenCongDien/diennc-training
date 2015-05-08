@@ -154,7 +154,6 @@ class Configure {
 		if (!is_array($config)) {
 			$config = array($config => $value);
 		}
-
 		foreach ($config as $name => $value) {
 			self::$_values = Hash::insert(self::$_values, $name, $value);
 		}
@@ -184,9 +183,12 @@ class Configure {
  * @link http://book.cakephp.org/2.0/en/development/configuration.html#Configure::read
  */
 	public static function read($var = null) {
-		if ($var === null) {
+                if ($var === null) {
 			return self::$_values;
 		}
+                // Note this is config infomation for Appalication of Cake 
+                // this info get from "libs/Cake/boostrap.php with all lines use funtion " 
+                // write() xem funtion nay chúng ta sẽ thấy thông tin config được save như thế nào""
 		return Hash::get(self::$_values, $var);
 	}
 

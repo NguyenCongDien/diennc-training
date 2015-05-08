@@ -12,7 +12,7 @@
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakeo    undation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Routing
  * @since         CakePHP(tm) v 0.2.9
@@ -154,7 +154,8 @@ class Dispatcher implements CakeEventListener {
 			$beforeEvent->result->send();
 			return;
 		}
-
+                
+                // Tự động load class and aguments truyền vào    
 		$controller = $this->_getController($request, $response);
 
 		if (!($controller instanceof Controller)) {
@@ -232,14 +233,20 @@ class Dispatcher implements CakeEventListener {
  * @return mixed name of controller if not loaded, or object if loaded
  */
 	protected function _getController($request, $response) {
+                // Load class name with router current
 		$ctrlClass = $this->_loadController($request);
 		if (!$ctrlClass) {
 			return false;
 		}
+                // Khởi tạo class tại thời điểm nhận được url : 
+                // trong đó ReflectionClass có tác dụng khởi tạo lên class mới cho
+                //  phep tau thời điểm running can modifed  method, property, contanst and 
+                //  doc comment of class đã được khai báo từ trước nó sẽ autocreated __contruct($aguments)
 		$reflection = new ReflectionClass($ctrlClass);
 		if ($reflection->isAbstract() || $reflection->isInterface()) {
 			return false;
 		}
+                // Create new class and with aguments input.
 		return $reflection->newInstance($request, $response);
 	}
 

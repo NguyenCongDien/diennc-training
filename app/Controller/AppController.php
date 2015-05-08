@@ -32,10 +32,64 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
     /*
-     * Install DebugKit
+     * Defined components uses in project
+     * 
      */
-    public $components = array(
-        'DebugKit.Toolbar'
+
+    public $components = array('DebugKit.Toolbar',
+        'Session',
+        'Auth' => array(
+            'loginRedirect'  => array(
+                'controller' => 'users',
+                'action'     => 'index'
+            ),
+            'logoutRedirect' => array(
+                'controller' => 'pages',
+                'action'     => 'display',
+                'home'
+            ),
+            'authenticate' => array(
+                'Form' => array(
+                    'passwordHasher' => 'Blowfish'
+                )
+            )
+        )
     );
+
+    /*
+     * Defined helpers uses in project
+     * 
+     */
+    var $helpers = array('Html', 'Form', 'Session');
+
+    // Function send mail in prject
+    protected function _sendMail($message, $last_id, $lastest_user_email) {
+        $message = "Your account information: Username: " .
+                $lastest_user_email .
+                // ". Password: " .
+                // $lastest_user_password .
+                " Please change your password at: " .
+                "http://money.dev:8080/users/activate/" .
+                $last_id .
+                "/" . $lastest_user_email;
+
+        $Email = new CakeEmail('smtp');
+        $Email->from(array('moneylover.system@gmail.com' => __("Money lover system")));
+        $Email->to($lastest_user_email);
+        $Email->subject(__("Your account information"));
+        $Email->send($message);
+    }
+    
+    
+    public function isAuthorized($user)
+    {
+        if ($this->Auth->User('id')) {
+            return true;
+        }
+        // Default deny
+        return false;
+    }
+    
+    
 
 }

@@ -536,14 +536,15 @@ class Controller extends Object implements CakeEventListener {
 	}
 
 /**
- * Merge components, helpers, and uses vars from
+ * Merge components, helpers, and uses vars from(gọi tất cả các thông tin load lên cho 1 require)
  * Controller::$_mergeParent and PluginAppController.
  *
  * @return void
  */
 	protected function _mergeControllerVars() {
 		$pluginController = $pluginDot = null;
-		$mergeParent = is_subclass_of($this, $this->_mergeParent);
+                // is_subclass_of($nameClassChild, $nameClassParent) : Check xem classChild can is class for nameClass parents 
+                $mergeParent = is_subclass_of($this, $this->_mergeParent);
 		$pluginVars = array();
 		$appVars = array();
 
@@ -554,13 +555,13 @@ class Controller extends Object implements CakeEventListener {
 			}
 			$pluginDot = $this->plugin . '.';
 		}
-
 		if ($pluginController) {
 			$merge = array('components', 'helpers');
 			$this->_mergeVars($merge, $pluginController);
 		}
 
 		if ($mergeParent || !empty($pluginController)) {
+                        // get_class_vars($nameClass): get all from class properties is protected or public 
 			$appVars = get_class_vars($this->_mergeParent);
 			$merge = array('components', 'helpers');
 			$this->_mergeVars($merge, $this->_mergeParent, true);

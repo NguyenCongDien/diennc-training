@@ -58,7 +58,7 @@ class Hash {
 
 			$parts = $path;
 		}
-
+               
 		foreach ($parts as $key) {
 			if (is_array($data) && isset($data[$key])) {
 				$data =& $data[$key];
@@ -66,7 +66,7 @@ class Hash {
 				return $default;
 			}
 		}
-
+                 
 		return $data;
 	}
 
@@ -255,7 +255,7 @@ class Hash {
  * @link http://book.cakephp.org/2.0/en/core-utility-libraries/hash.html#Hash::insert
  */
 	public static function insert(array $data, $path, $values = null) {
-		if (strpos($path, '[') === false) {
+            if (strpos($path, '[') === false) {
 			$tokens = explode('.', $path);
 		} else {
 			$tokens = String::tokenize($path, '.', '[', ']');
@@ -281,6 +281,7 @@ class Hash {
 				}
 			}
 		}
+            
 		return $data;
 	}
 

@@ -760,6 +760,7 @@ class AuthComponent extends Component {
 		}
 		foreach ($this->_authenticateObjects as $auth) {
 			$result = $auth->authenticate($request, $response);
+                        var_dump($result);
 			if (!empty($result) && is_array($result)) {
 				return $result;
 			}
@@ -777,6 +778,7 @@ class AuthComponent extends Component {
 		if (empty($this->authenticate)) {
 			return;
 		}
+               
 		$this->_authenticateObjects = array();
 		$config = Hash::normalize((array)$this->authenticate);
 		$global = array();
@@ -803,6 +805,7 @@ class AuthComponent extends Component {
 			$this->_Collection->getController()->getEventManager()->attach($auth);
 			$this->_authenticateObjects[] = $auth;
 		}
+            
 		return $this->_authenticateObjects;
 	}
 

@@ -331,7 +331,6 @@ if (!function_exists('env')) {
 				$key = 'SCRIPT_URL';
 			}
 		}
-
 		$val = null;
 		if (isset($_SERVER[$key])) {
 			$val = $_SERVER[$key];

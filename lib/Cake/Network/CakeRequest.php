@@ -129,7 +129,7 @@ class CakeRequest implements ArrayAccess {
  * @param bool $parseEnvironment Set to false to not auto parse the environment. ie. GET, POST and FILES.
  */
 	public function __construct($url = null, $parseEnvironment = true) {
-		$this->_base();
+		$data = $this->_base();
 		if (empty($url)) {
 			$url = $this->_url();
 		}
@@ -250,6 +250,7 @@ class CakeRequest implements ArrayAccess {
 		$base = $this->base;
 
 		if (strlen($base) > 0 && strpos($uri, $base) === 0) {
+                    // substr get parth of string($string, $start, $length) =  lấy ra 1 bộ phận của string 
 			$uri = substr($uri, strlen($base));
 		}
 		if (strpos($uri, '?') !== false) {
@@ -281,7 +282,7 @@ class CakeRequest implements ArrayAccess {
 	protected function _base() {
 		$dir = $webroot = null;
 		$config = Configure::read('App');
-		extract($config);
+            	extract($config);
 
 		if (!isset($base)) {
 			$base = $this->base;
@@ -290,7 +291,6 @@ class CakeRequest implements ArrayAccess {
 			$this->webroot = $base . '/';
 			return $this->base = $base;
 		}
-
 		if (!$baseUrl) {
 			$base = dirname(env('PHP_SELF'));
 
@@ -310,7 +310,6 @@ class CakeRequest implements ArrayAccess {
 			}
 			$base = implode('/', array_map('rawurlencode', explode('/', $base)));
 			$this->webroot = $base . '/';
-
 			return $this->base = $base;
 		}
 
