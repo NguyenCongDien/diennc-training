@@ -1,174 +1,140 @@
--- MySQL Workbench Forward Engineering
+-- phpMyAdmin SQL Dump
+-- version 4.0.10deb1
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost:3306
+-- Generation Time: Apr 25, 2015 at 02:08 PM
+-- Server version: 5.5.43-0ubuntu0.14.04.1
+-- PHP Version: 5.5.9-1ubuntu4.9
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
-
--- -----------------------------------------------------
--- Schema project_training
--- -----------------------------------------------------
-
--- -----------------------------------------------------
--- Schema project_training
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `project_training` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `project_training` ;
-
--- -----------------------------------------------------
--- Table `project_training`.`users`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `project_training`.`users` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(60) NULL,
-  `password` VARCHAR(50) NULL,
-  `email` VARCHAR(120) NULL,
-  `created_date` DATETIME NULL,
-  `modifed_date` DATETIME NULL,
-  `default_wallet` INT(7) NULL,
-  `default_current` INT(7) NULL,
-  `phone` VARCHAR(25) NULL,
-  `delete_flag` TINYINT(1) NULL,
-  `wallets_id` INT NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
--- -----------------------------------------------------
--- Table `project_training`.`currencies`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `project_training`.`currencies` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NULL,
-  `comment` VARCHAR(255) NULL,
-  `delete_flag` TINYINT(1) NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
+--
+-- Database: `project_training`
+--
 
--- -----------------------------------------------------
--- Table `project_training`.`wallets`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `project_training`.`wallets` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NULL,
-  `value` DECIMAL(10,2) NULL,
-  `created_date` DATETIME NULL,
-  `modifed_date` DATETIME NULL,
-  `deleted_flag` TINYINT(1) NULL,
-  `currency_id` INT NOT NULL,
-  `user_id` INT NOT NULL,
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `categories`
+--
+
+CREATE TABLE IF NOT EXISTS `categories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `modifed_date` datetime DEFAULT NULL,
+  `delete_flag` tinyint(1) DEFAULT NULL,
+  `type_special` tinyint(1) NOT NULL,
+  `type_name` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `category_wallet`
+--
+
+CREATE TABLE IF NOT EXISTS `category_wallet` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `wallet_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_wallets_currencies_idx` (`currency_id` ASC),
-  INDEX `fk_wallets_users1_idx` (`user_id` ASC),
-  CONSTRAINT `fk_wallets_currencies`
-    FOREIGN KEY (`currency_id`)
-    REFERENCES `project_training`.`currencies` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_wallets_users1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `project_training`.`users` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+  KEY `fk_category_wallet_wallets1` (`wallet_id`),
+  KEY `fk_category_wallet_categories1` (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+-- --------------------------------------------------------
 
--- -----------------------------------------------------
--- Table `project_training`.`specials`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `project_training`.`specials` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NULL,
-  `comment` VARCHAR(255) NULL,
-  `delete_flag` TINYINT(1) NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
+--
+-- Table structure for table `transactions`
+--
 
-
--- -----------------------------------------------------
--- Table `project_training`.`types`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `project_training`.`types` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NULL,
-  `comment` VARCHAR(255) NULL,
-  `delete_flag` TINYINT(1) NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `project_training`.`categories`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `project_training`.`categories` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NULL,
-  `created_date` DATETIME NULL,
-  `modifed_date` DATETIME NULL,
-  `delete_flag` TINYINT(1) NULL,
-  `wallet_id` INT NOT NULL,
-  `special_id` INT NOT NULL,
-  `type_id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `transactions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) DEFAULT NULL,
+  `value` decimal(10,2) DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `modifed_date` datetime DEFAULT NULL,
+  `date_execution` datetime DEFAULT NULL,
+  `comment` varchar(255) DEFAULT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  `delete_flag` tinyint(1) DEFAULT NULL,
+  `category_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_categories_wallets1_idx` (`wallet_id` ASC),
-  INDEX `fk_categories_specials1_idx` (`special_id` ASC),
-  INDEX `fk_categories_types1_idx` (`type_id` ASC),
-  CONSTRAINT `fk_categories_wallets1`
-    FOREIGN KEY (`wallet_id`)
-    REFERENCES `project_training`.`wallets` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_categories_specials1`
-    FOREIGN KEY (`special_id`)
-    REFERENCES `project_training`.`specials` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_categories_types1`
-    FOREIGN KEY (`type_id`)
-    REFERENCES `project_training`.`types` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+  KEY `fk_transactions_categories1` (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+-- --------------------------------------------------------
 
--- -----------------------------------------------------
--- Table `project_training`.`transactions`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `project_training`.`transactions` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(250) NULL,
-  `value` DECIMAL(10,2) NULL,
-  `created_date` DATETIME NULL,
-  `modifed_date` DATETIME NULL,
-  `date_execution` DATETIME NULL,
-  `comment` VARCHAR(255) NULL,
-  `category_id` VARCHAR(45) NULL,
-  `parent_id` INT NULL,
-  `delete_flag` TINYINT(1) NULL,
-  `categories_id` INT NOT NULL,
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(60) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `modifed_date` datetime DEFAULT NULL,
+  `default_wallet` int(7) DEFAULT NULL,
+  `default_current` int(7) DEFAULT NULL,
+  `delete_flag` tinyint(1) DEFAULT NULL,
+  `email` varchar(150) DEFAULT NULL,
+  `token` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wallets`
+--
+
+CREATE TABLE IF NOT EXISTS `wallets` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `value` decimal(10,2) DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `modifed_date` datetime DEFAULT NULL,
+  `deleted_flag` tinyint(1) DEFAULT NULL,
+  `currency_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_transactions_categories1_idx` (`categories_id` ASC),
-  CONSTRAINT `fk_transactions_categories1`
-    FOREIGN KEY (`categories_id`)
-    REFERENCES `project_training`.`categories` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+  KEY `fk_wallets_users1` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-USE `project_training` ;
+--
+-- Constraints for dumped tables
+--
 
--- -----------------------------------------------------
--- Placeholder table for view `project_training`.`view1`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `project_training`.`view1` (`id` INT);
+--
+-- Constraints for table `category_wallet`
+--
+ALTER TABLE `category_wallet`
+  ADD CONSTRAINT `fk_category_wallet_wallets1` FOREIGN KEY (`wallet_id`) REFERENCES `wallets` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_category_wallet_categories1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
--- -----------------------------------------------------
--- View `project_training`.`view1`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `project_training`.`view1`;
-USE `project_training`;
+--
+-- Constraints for table `transactions`
+--
+ALTER TABLE `transactions`
+  ADD CONSTRAINT `fk_transactions_categories1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
+--
+-- Constraints for table `wallets`
+--
+ALTER TABLE `wallets`
+  ADD CONSTRAINT `fk_wallets_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
